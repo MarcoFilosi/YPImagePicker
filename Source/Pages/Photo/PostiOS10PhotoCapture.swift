@@ -48,6 +48,7 @@ class PostiOS10PhotoCapture: NSObject, YPPhotoCapture, AVCapturePhotoCaptureDele
         // Set flash mode.
         if let deviceInput = deviceInput {
             if deviceInput.device.isFlashAvailable {
+                #if !targetEnvironment(simulator)
                 switch currentFlashMode {
                 case .auto:
                     if photoOutput.supportedFlashModes.contains(.auto) {
@@ -62,6 +63,9 @@ class PostiOS10PhotoCapture: NSObject, YPPhotoCapture, AVCapturePhotoCaptureDele
                         settings.flashMode = .on
                     }
                 }
+                #else
+                settings.flashMode = .off
+                #endif
             }
         }
         return settings
